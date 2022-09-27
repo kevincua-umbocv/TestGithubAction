@@ -1,0 +1,33 @@
+name: production
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Which action to perform'
+        required: false
+        default: 'Input "deploy" to deploy'
+
+env:
+  environment: production
+  ecr: 774915305292.dkr.ecr.us-west-2.amazonaws.com/busybeaver
+
+jobs:
+  test:
+    if: github.event.inputs.action != 'deploy'
+    steps:
+      - run: echo "test"
+
+  build:
+    if: github.event.inputs.action != 'deploy'
+    needs: test
+    steps:
+      - run: echo "build"
+
+  deploy:
+    if: github.event.inputs.action == 'deploy'
+    needs: build
+    steps:
+      - run: echo "deploy"
