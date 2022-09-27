@@ -10,24 +10,23 @@ on:
         required: false
         default: 'Input "deploy" to deploy'
 
-env:
-  environment: production
-  ecr: 774915305292.dkr.ecr.us-west-2.amazonaws.com/busybeaver
-
 jobs:
   test:
     if: github.event.inputs.action != 'deploy'
+    runs-on: ubuntu-latest
     steps:
       - run: echo "test"
 
   build:
     if: github.event.inputs.action != 'deploy'
+    runs-on: ubuntu-latest
     needs: test
     steps:
       - run: echo "build"
 
   deploy:
     if: github.event.inputs.action == 'deploy'
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - run: echo "deploy"
